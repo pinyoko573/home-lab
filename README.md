@@ -42,6 +42,7 @@ Instructions
 | Ubuntu   | ubuntu_rsyslog     | Provides information on installing rsyslog                    | No        |
 | Ubuntu   | ubuntu_wordpress   | Installs WordPress                                            |           |
 | Windows  | win                | Sets WinRM service to Auto and changes the host name          |           |
+| Windows  | win_azurearc       | Onboard machine to Azure Arc                                  |           |
 | Windows  | win_joindomain     | Joins an Active Directory domain                              |           |
 | Windows  | win_createdomain   | Creates an Active Directory Domain Controller as a new forest |           |
 | Windows  | win_eventcollector | Configures Windows Event Collector                            |           |
