@@ -1,0 +1,41 @@
+- name: Install mysql and python3-pip
+  ansible.builtin.apt:
+    name:
+      - mysql-server
+      - python3-pip
+    update_cache: yes
+
+- name: Install pymysql for community.mysql plugin
+  ansible.builtin.pip:
+    name: pymysql
+    break_system_packages: yes
+
+- name: Replace bind-address to all interfaces
+  ansible.builtin.replace:
+    path: /etc/mysql/mysql.conf.d/mysqld.cnf
+    regexp: '(bind-address\s+= )(127\.0\.0\.1)'
+    replace: '\g<1>0.0.0.0'
+  register: bindaddress_replace
+
+- name: Restart mysql service
+  ansible.builtin.service:
+    name: mysql.service
+    state: restarted
+  when: bindaddress_replace.changed
+
+- name: Create users
+  ansible.builtin.include_tasks:
+    file: create_user.yml
+
+- name: Modify database root user password
+  community.mysql.mysql_user:
+    name: root
+    password: "{{ mysql_root_password }}"
+    login_unix_socket: /run/mysqld/mysqld.sock
+    check_implicit_admin: yes
+
+# - name: Create .my.cnf
+#   template:
+#     src: "files/my.cnf"
+#     dest: "~/.my.cnf"
+#     mode: 0400

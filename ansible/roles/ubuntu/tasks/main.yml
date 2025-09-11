@@ -1,0 +1,15 @@
+- name: Replace hostname in /etc/hosts
+  ansible.builtin.replace:
+    path: /etc/hosts
+    regexp: '(127\.0\.1\.1 )(.+)'
+    replace: '\1{{ host_name }}'
+  register: hosts_replace
+
+- name: Replace hostname in /etc/hostname
+  ansible.builtin.hostname:
+    name: "{{ host_name }}"
+  register: hostname_replace
+
+- name: Reboot machine
+  ansible.builtin.reboot:
+  when: hosts_replace.changed or hostname_replace.changed

@@ -1,0 +1,13 @@
+- name: Set DNS to DC DNS Server
+  ansible.windows.win_dns_client:
+    adapter_names: '*'
+    dns_servers: "{{ hostvars[domain_controller]['ansible_host'] }}"
+
+- name: Join domain
+  microsoft.ad.membership:
+    dns_domain_name: "{{ domain_name }}"
+    hostname: "{{ host_name }}"
+    domain_admin_user: "{{ hostvars[domain_controller]['ansible_user']}}@{{ domain_name }}"
+    domain_admin_password: "{{ hostvars[domain_controller]['ansible_password'] }}"
+    state: domain
+    reboot: true

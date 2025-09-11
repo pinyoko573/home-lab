@@ -1,0 +1,55 @@
+- name: Install dependencies
+  ansible.builtin.apt:
+    pkg:
+    - apache2
+    - ghostscript
+    - libapache2-mod-php
+    - php
+    - php-bcmath
+    - php-curl
+    - php-imagick
+    - php-intl
+    - php-json
+    - php-mbstring
+    - php-mysql
+    - php-xml
+    - php-zip
+    update_cache: yes
+
+- name: Create directory
+  ansible.builtin.file:
+    path: /srv/www
+    state: directory
+    owner: www-data
+    group: www-data
+
+- name: Download and install WordPress
+  ansible.builtin.unarchive:
+    src: https://wordpress.org/latest.tar.gz
+    dest: /srv/www
+    remote_src: yes
+    owner: www-data
+    group: www-data
+
+- name: Create Apache site for WordPress
+  ansible.builtin.copy:
+    src: "files/wordpress.conf"
+    dest: "/etc/apache2/sites-available/wordpress.conf"
+
+- name: Enable site
+  ansible.builtin.shell: |
+    a2ensite wordpress
+    a2enmod rewrite
+    a2dissite 000-default
+
+- name: Restart Apache service
+  ansible.builtin.service:
+    name: apache2
+    state: restarted
+
+- name: Create wp-config.php
+  template:
+    src: "files/wp-config.php"
+    dest: "/srv/www/wordpress/wp-config.php"
+    owner: www-data
+    group: www-data

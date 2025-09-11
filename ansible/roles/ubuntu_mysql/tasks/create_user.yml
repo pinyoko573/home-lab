@@ -1,0 +1,11 @@
+# Create multiple sql users here
+
+- name: Create admin user to access within /24 subnet
+  community.mysql.mysql_user:
+    name: "{{ mysql_user_username }}"
+    password: "{{ mysql_user_password }}"
+    priv: '*.*:ALL,GRANT'
+    host: "{{ ansible_host.split('.')[0:3] | join('.') }}.%"
+    state: present
+    login_unix_socket: /run/mysqld/mysqld.sock
+    check_implicit_admin: yes

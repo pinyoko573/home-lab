@@ -1,0 +1,20 @@
+# Reference: https://michaelwaterman.nl/2024/06/29/step-by-step-guide-to-windows-event-forwarding-and-ntlmv1-monitoring/
+
+- name: Configure Windows Event Collector Service
+  ansible.windows.win_command: wecutil qc /q
+
+- name: Copy configurationFile.xml into Temp folder
+  ansible.windows.win_copy:
+    src: files/configurationFile.xml
+    dest: "%TEMP%\\configurationFile.xml"
+
+- name: Import Event Viewer subscription
+  ansible.windows.win_command:
+    chdir: "%TEMP%"
+    cmd: wecutil cs configurationFile.xml
+
+- name: Adjust size of Forwarded Events log
+  ansible.windows.win_command: wevtutil sl forwardedevents /ms:1000000000
+
+- name: Enable log archive for Forwarded Events log
+  ansible.windows.win_command: wevtutil sl forwardedevents /ab:true /rt:true

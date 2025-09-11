@@ -1,0 +1,7 @@
+- name: Configure MySQL
+  ansible.builtin.include_tasks:
+    file: mysql.yml
+
+- name: Install WordPress
+  ansible.builtin.include_tasks:
+    file: wordpress.yml

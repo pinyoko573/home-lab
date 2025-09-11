@@ -1,0 +1,13 @@
+- name: Ensure that WinRM is started automatically
+  ansible.windows.win_service:
+    name: WinRM
+    start_mode: auto
+
+- name: Change the hostname
+  ansible.windows.win_hostname:
+    name: "{{ host_name }}"
+  register: hostname_reboot
+
+- name: Reboot after hostname changed
+  ansible.windows.win_reboot:
+  when: hostname_reboot.reboot_required

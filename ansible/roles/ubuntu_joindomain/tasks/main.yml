@@ -1,0 +1,43 @@
+- name: Check if DC DNS Server is already added to resolved.conf
+  ansible.builtin.lineinfile:
+    path: /etc/systemd/resolved.conf
+    line: "DNS={{ hostvars[domain_controller]['ansible_host'] }}"
+    state: absent
+  check_mode: yes
+  changed_when: false
+  register: dcdns_exists
+
+- name: Add DC DNS Server to resolved.conf
+  ansible.builtin.lineinfile:
+    path: /etc/systemd/resolved.conf
+    line: "DNS={{ hostvars[domain_controller]['ansible_host'] }}"
+  when: not dcdns_exists.found
+  register: dcdns_add
+
+- name: Restart systemd-resolved service
+  ansible.builtin.service:
+    name: systemd-resolved
+    state: restarted
+  when: dcdns_add.changed
+
+- name: Install sssd packages
+  ansible.builtin.apt:
+    pkg:
+    - sssd-ad
+    - sssd-tools
+    - realmd
+    - adcli
+    update_cache: yes
+
+- name: Check if domain is discoverable via DNS
+  ansible.builtin.shell: "realm -v discover {{ domain_name }}"
+  register: realm_output
+  failed_when: "'Successfully discovered' not in realm_output.stderr"
+
+- name: Join domain
+  ansible.builtin.shell:
+    cmd: "realm join {{ domain_name }} -U {{ hostvars[domain_controller]['ansible_user'] }}"
+    stdin: "{{ hostvars[domain_controller]['ansible_password'] }}"
+
+- name: Setup automatic home directory creation for network users
+  ansible.builtin.shell: "pam-auth-update --enable mkhomedir"

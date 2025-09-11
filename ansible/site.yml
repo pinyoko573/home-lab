@@ -1,0 +1,30 @@
+- hosts: win_dc
+  roles:
+  - win
+  - win_createdomain
+- hosts: win_arc
+  roles:
+  - win
+  - win_joindomain
+  - win_eventcollector
+  - win_azurearc
+- hosts: win_pc
+  roles:
+  - win
+  - win_joindomain
+
+- hosts: ubuntu_arc
+  roles:
+  - { role: ubuntu, become: yes }
+  - { role: ubuntu_joindomain, become: yes }
+  - { role: ubuntu_azurearc, become: yes }
+- hosts: ubuntu_mysql
+  roles:
+  - { role: ubuntu, become: yes }
+  - { role: ubuntu_joindomain, become: yes }
+  - { role: ubuntu_mysql, become: yes }
+- hosts: ubuntu_wordpress
+  roles:
+  - { role: ubuntu, become: yes }
+  - { role: ubuntu_joindomain, become: yes }
+  - { role: ubuntu_wordpress, become: yes }
