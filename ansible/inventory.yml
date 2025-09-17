@@ -46,7 +46,7 @@ ubuntu:
           service_principal_id: ''
           service_principal_secret: ''
           resource_group: ''
-          tenant_id: '7'
+          tenant_id: ''
           subscription_id: ''
           location: ''
     ubuntu_mysql:
@@ -74,3 +74,16 @@ ubuntu:
         wordpress_database_name: wordpress
         wordpress_database_username: wordpress
         wordpress_database_password: P@ssw0rd
+
+simulation:
+  children:
+    win:
+      children:
+        kerberoasting:
+          hosts:
+            win2022-svr01a:
+              ansible_host: 192.168.10.135
+              ansible_user: Administrator
+              ansible_password: P@ssw0rd
+              spn_fqdn: WIN-SVR02.MYDOMAIN.COM
+              domain_name: MYDOMAIN.COM

@@ -33,21 +33,27 @@ Instructions
 3. Start the ssh-agent program and copy the private key to the agent in order to skip the passphrase prompt `ssh-agent $SHELL && ssh-add ~/.ssh/control_node`
 
 ### Available Tasks
-| Platform | Task               | Description                                                   | Automated |
-| -------- | ------------------ | ------------------------------------------------------------- | --------- |
-| Ubuntu   | ubuntu             | Changes the host name                                         |           |
-| Ubuntu   | ubuntu_azurearc    | Onboard machine to Azure Arc                                  |           |
-| Ubuntu   | ubuntu_joindomain  | Joins an Active Directory domain                              |           |
-| Ubuntu   | ubuntu_mysql       | Installs MySQL server                                         |           |
-| Ubuntu   | ubuntu_rsyslog     | Provides information on installing rsyslog                    | No        |
-| Ubuntu   | ubuntu_wordpress   | Installs WordPress                                            |           |
-| Windows  | win                | Sets WinRM service to Auto and changes the host name          |           |
-| Windows  | win_azurearc       | Onboard machine to Azure Arc                                  |           |
-| Windows  | win_joindomain     | Joins an Active Directory domain                              |           |
-| Windows  | win_createdomain   | Creates an Active Directory Domain Controller as a new forest |           |
-| Windows  | win_eventcollector | Configures Windows Event Collector                            |           |
-| Windows  | win_eventforwarder | Provides GPO settings to configure Windows Event Forwarder    | No        |
-| Windows  | win_joindomain     | Joins an Active Directory domain                              |           | 
+
+#### Setup
+| Platform | Task                  | Description                                                   | Automated |
+| -------- | --------------------- | ------------------------------------------------------------- | --------- |
+| Ubuntu   | ubuntu_changehostname | Changes the host name                                         |           |
+| Ubuntu   | ubuntu_azurearc       | Onboard machine to Azure Arc                                  |           |
+| Ubuntu   | ubuntu_joindomain     | Joins an Active Directory domain                              |           |
+| Ubuntu   | ubuntu_mysql          | Installs MySQL server                                         |           |
+| Ubuntu   | ubuntu_rsyslog        | Provides information on installing rsyslog                    | No        |
+| Ubuntu   | ubuntu_wordpress      | Installs WordPress                                            |           |
+| Windows  | win_changehostname    | Sets WinRM service to Auto and changes the host name          |           |
+| Windows  | win_azurearc          | Onboard machine to Azure Arc                                  |           |
+| Windows  | win_joindomain        | Joins an Active Directory domain                              |           |
+| Windows  | win_createdomain      | Creates an Active Directory Domain Controller as a new forest |           |
+| Windows  | win_eventcollector    | Configures Windows Event Collector                            |           |
+| Windows  | win_eventforwarder    | Provides GPO settings to configure Windows Event Forwarder    | No        |
+| Windows  | win_joindomain        | Joins an Active Directory domain                              |           | 
+
+#### Attack Simulations
+1. Kerberoasting
+2. AS-REP Roasting
 
 ## Terraform
 

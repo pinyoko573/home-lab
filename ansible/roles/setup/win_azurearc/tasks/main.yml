@@ -1,3 +1,5 @@
+# https://learn.microsoft.com/en-us/azure/azure-arc/servers/onboard-ansible-playbooks
+
 - name: Check if the Connected Machine Agent has already been downloaded on Windows servers
   win_stat:
     path: C:\Program Files\AzureConnectedMachineAgent
