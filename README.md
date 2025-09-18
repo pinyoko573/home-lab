@@ -1,16 +1,20 @@
 # home-lab-scripts
 
-Automation scripts for setting up a security lab to simulate on attacks and/or log ingestion.
+Easily deploy a security lab environment using automation scripts designed to simulate on attacks and faciliate log ingestion for analysis and detection!
 
-These scripts are tested on virtual machines (e.g. VMware Workstation), but you can also try it on a physical machine or cloud virtual machine.
+These scripts are tested on virtual machines (e.g. VMware Workstation), but they can also be run on physical machines or cloud-based virtual instances.
+
+Simply install the operating system, setup remote configurations, choose the intended tasks, edit the variables on *inventory.yml*, *site.yml* and */group_vars* and you're good to go!
 
 ## Ansible
 
 ### Getting Started
 
-To add/remove tasks, modify site.yml with the task name.
+To add or remove tasks, modify the tasks of the host groups in *site.yml* to your needs.
 
-Be sure to modify the hosts and vars in ***inventory.yml*** and ***/group_vars*** before running.
+Be sure to modify the hosts and variables in ***inventory.yml*** and ***/group_vars*** before running!
+
+To run, enter `ansible-playbook site.yml -i inventory.yml [-l win_dc]`
 
 #### Windows
 Tested platforms
@@ -53,15 +57,29 @@ Instructions
 
 #### Attack Simulations
 1. Kerberoasting
-2. AS-REP Roasting
+  - Description
+    - Kerberoasting is an attack where an attacker targets on service accounts by:
+      1. Enumerate service accounts with SPNs from the domain controller
+      2. Using the authenticated user's ticket-granting ticket (TGT) to request for a Kerberos ticket-granting service (TGS) for every SPN, with the TGS's encryption type to be RC4, a weak cryptography algorithm.
+      3. Attempt to brute force the password hash in TGS to obtain the plaintext password of the service account.
+  - Assumptions
+    - Attacker is within the AD network and has an authenticated user account.
+  - Detections
+    - Look for Windows events with ID 4768 and 4769, with the ticket encryption type RC4 (0x17).
+
+2. AS-REP Roasting (todo)
 
 ## Terraform
 
 ### Azure Sentinel
 
+#### Setup
 Performs:
 - Creation of resource group
 - Creation of log analytics workspace (LAW), data collection rules (DCRs)
 - Onboard Azure Arc machines (Windows & Linux) and install Azure Monitor Agents
 - Add Azure Arc machines to Data sources in DCR
-- Onboard LAW to Sentinel
+- Onboard LAW to Microsoft Sentinel
+
+#### Detection
+1. Microsoft Sentinel analytic rules for Kerberoasting (todo)
