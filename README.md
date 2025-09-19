@@ -1,5 +1,7 @@
 # home-lab-scripts
 
+![Diagram](https://github.com/user-attachments/assets/859cdd43-ddc8-4a77-bd0a-d4bdaf069690)
+
 Easily deploy a security lab environment using automation scripts designed to simulate on attacks and faciliate log ingestion for analysis and detection!
 
 These scripts are tested on virtual machines (e.g. VMware Workstation), but they can also be run on physical machines or cloud-based virtual instances.
