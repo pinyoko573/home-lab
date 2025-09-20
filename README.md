@@ -93,7 +93,6 @@ Performs:
 - Onboard Azure Arc machines (Windows & Linux) and install Azure Monitor Agents
 - Add Azure Arc machines to Data sources in DCR
 - Onboard LAW to Microsoft Sentinel
-
-#### Analytic rules
-- Potential Kerberoasting
-- Potential AS-REP Roasting
+- Add following analytic rules:
+  - Potential Kerberoasting
+  - Potential AS-REP Roasting
