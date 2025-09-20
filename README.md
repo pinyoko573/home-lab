@@ -58,18 +58,29 @@ Instructions
 | Windows  | win_joindomain        | Joins an Active Directory domain                              |           | 
 
 #### Attack Simulations
+For attack simulations, run `sudo ansible-playbook site.yml -i inventory.yml -l kerberoasting` as apt packages may be installed on your managed node.
+
 1. Kerberoasting
   - Description
     - Kerberoasting is an attack where an attacker targets on service accounts by:
-      1. Enumerate service accounts with SPNs from the domain controller
+      1. Enumerate service accounts with SPNs from the domain controller.
       2. Using the authenticated user's ticket-granting ticket (TGT) to request for a Kerberos ticket-granting service (TGS) for every SPN, with the TGS's encryption type to be RC4, a weak cryptography algorithm.
       3. Attempt to brute force the password hash in TGS to obtain the plaintext password of the service account.
   - Assumptions
     - Attacker is within the AD network and has an authenticated user account.
   - Detections
-    - Look for Windows events with ID 4768 and 4769, with the ticket encryption type RC4 (0x17).
+    - Look for Windows events with ID 4769, with the ticket encryption type RC4 (0x17).
 
-2. AS-REP Roasting (todo)
+2. AS-REP Roasting
+  - Description
+    - When an account has enabled 'Do not require Kerberos preauthentication', the domain controller will return a AS-REP message containing the TGT, where the TGT contains the password hash. An attacker can retrieve the plaintext password by:
+      1. Enumerate accounts with the DONT_REQ_PREAUTH flag set on the userAccountControl attribute.
+      2. Sends a Authentication Server Request (AS-REQ) to the domain controller, in which a Authentication Server Response (AS-REP) message will be returned to the attacker without pre-authentication validation.
+      3. Attempt to brute force the password hash in TGT to obtain the plaintext password of the account.
+ - Assumptions
+    - Attacker is within the AD network and has an authenticated user account.
+  - Detections
+    - Look for Windows events with ID 4768, with the ticket encryption type RC4 (0x17).
 
 ## Terraform
 
@@ -83,5 +94,6 @@ Performs:
 - Add Azure Arc machines to Data sources in DCR
 - Onboard LAW to Microsoft Sentinel
 
-#### Detection
-1. Microsoft Sentinel analytic rules for Kerberoasting (todo)
+#### Analytic rules
+- Potential Kerberoasting
+- Potential AS-REP Roasting

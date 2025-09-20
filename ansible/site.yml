@@ -32,3 +32,7 @@
 - hosts: kerberoasting
   roles:
   - attack_simulation/kerberoasting
+
+- hosts: asreproasting
+  roles:
+  - attack_simulation/asreproasting

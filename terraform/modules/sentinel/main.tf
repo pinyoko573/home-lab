@@ -83,7 +83,7 @@ resource "azurerm_monitor_data_collection_rule" "dcr-homelab-002" {
   data_sources {
     windows_event_log {
       streams        = ["Microsoft-Event"]
-      x_path_queries = ["ForwardedEvents!*[System[(EventID=4769)]]"]
+      x_path_queries = ["ForwardedEvents!*[System[(EventID=4768 or EventID=4769)]]"]
       name           = "windows-datasource-wineventlog"
     }
   }

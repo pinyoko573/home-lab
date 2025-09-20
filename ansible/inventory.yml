@@ -87,3 +87,10 @@ simulation:
               ansible_password: P@ssw0rd
               spn_fqdn: WIN-SVR02.MYDOMAIN.COM
               domain_name: MYDOMAIN.COM
+        asreproasting:
+          hosts:
+            win2022-svr01b:
+              ansible_host: 192.168.10.135
+              ansible_user: Administrator
+              ansible_password: P@ssw0rd
+              domain_name: MYDOMAIN.COM
